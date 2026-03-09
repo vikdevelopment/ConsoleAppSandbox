@@ -1,0 +1,63 @@
+name: Trigger auto deployment for mycontainerapp
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/mycontainerapp-AutoDeployTrigger-485a77bf-7f5d-454c-8cff-822fafa762b5.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.MYCONTAINERAPP_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.MYCONTAINERAPP_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.MYCONTAINERAPP_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Ensure modern Docker
+        run: |
+          sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
+          curl -fsSL https://get.docker.com | sudo sh
+          docker version
+      
+      - name: Debug repo structure
+        run: |
+          pwd
+          ls -R    
+        
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          dockerfilePath: ./MyContainerApp8/Dockerfile       # <- must exist in repo root
+          registryUrl: mycontainerapp8.azurecr.io
+          registryUsername: ${{ secrets.MYCONTAINERAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.MYCONTAINERAPP_REGISTRY_PASSWORD }}
+          containerAppName: mycontainerapp
+          resourceGroup: DefaultResourceGroup-WEU
+          imageToBuild: mycontainerapp8.azurecr.io/mycontainerapp:${{ github.sha }}
+
+
+
+
+
+
+
+
