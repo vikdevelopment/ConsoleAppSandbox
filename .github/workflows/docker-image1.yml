@@ -8,7 +8,7 @@ on:
       [ master ]
     paths:
     - '**'
-    - '.github/workflows/mycontainerapp-AutoDeployTrigger-485a77bf-7f5d-454c-8cff-822fafa762b5.yml'
+    - '.github/workflows/docker-image1.yml'
 
   # Allow manual trigger 
   workflow_dispatch:      
@@ -46,13 +46,13 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
-          dockerfilePath: ./MyContainerApp8/Dockerfile       # <- must exist in repo root
+          dockerfilePath: ./ConsoleAppSandbox/Dockerfile       # <- must exist in repo root
           registryUrl: mycontainerapp8.azurecr.io
           registryUsername: ${{ secrets.MYCONTAINERAPP_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.MYCONTAINERAPP_REGISTRY_PASSWORD }}
-          containerAppName: mycontainerapp
+          containerAppName: consoleappsandbox
           resourceGroup: DefaultResourceGroup-WEU
-          imageToBuild: mycontainerapp8.azurecr.io/mycontainerapp:${{ github.sha }}
+          imageToBuild: mycontainerapp8.azurecr.io/consoleappsandbox:${{ github.sha }}
 
 
 
