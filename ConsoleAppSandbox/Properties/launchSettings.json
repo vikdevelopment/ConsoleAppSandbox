@@ -1,10 +1,28 @@
 {
   "profiles": {
     "ConsoleAppSandbox": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "SYSTEM_ENVIRONMENT": "TEST",
+        "RUN_EVERY_MINUTES": "15"
+      }
     },
     "Container (Dockerfile)": {
       "commandName": "Docker"
     }
   }
-}
+} 
+
+//"ConsoleApp": {
+//  "commandName": "Project",
+//  "launchBrowser": true,
+//  "environmentVariables": {
+//    "ASPNETCORE_ENVIRONMENT": "Development",
+//    "DOTNET_ENVIRONMENT": "Development",
+//    "SYSTEM_ENVIRONMENT": "TEST",
+//    "RUN_EVERY_MINUTES": "15"
+//  },
+//  "applicationUrl": "https://localhost:51471;http://localhost:51472"
+//},
