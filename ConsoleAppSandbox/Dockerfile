@@ -6,6 +6,8 @@ USER $APP_UID
 WORKDIR /app
 
 ENV DOTNET_ENVIRONMENT=ProductionLinux
+ENV SYSTEM_ENVIRONMENT=DockerSystemEnv
+ENV RUN_EVERY_MINUTES=42
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build

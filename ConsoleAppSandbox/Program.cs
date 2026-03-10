@@ -21,15 +21,30 @@ await RunAsync(host.Services);
 
 static async Task RunAsync(IServiceProvider services)
 {
+    Console.WriteLine("Console application started successfully.");
+
     //load variables:
     var configuration = services.GetRequiredService<IConfiguration>();
+
     var systemEnvironment = configuration["SYSTEM_ENVIRONMENT"];
 
-    var testValue = configuration["Test"];
+    //TEST: load variable from appsettings.{Environment}.json
+    var appSetValue = configuration["AppSet"];
+    Console.WriteLine($"Variable AppSet: {appSetValue}");
 
-    Console.Write("Console application started successfully.");
-    Console.Write($"Variable test: {testValue}");
+    //Test: load from envirnomantal variable from dockerFile:
+    var runEvery15Value = configuration["RUN_EVERY_MINUTES"];
+    Console.WriteLine($"Variable runEvery15Value: {runEvery15Value}");
 
-    Console.Write("Console application finished successfully.");
+    //Test: added special variable in azure portal:
+    var onlyInAzure = configuration["ONLY_AZURE"];
+    Console.WriteLine($"Variable onlyInAzure: {onlyInAzure}");
+
+    //Test: obly in appSettings:
+    var onlyInAppset = configuration["OnlyAppSet"];
+    Console.WriteLine($"Variable onlyInAppSettings: {onlyInAppset}");
+    
+
+    Console.WriteLine("Console application finished successfully.");
     await Task.CompletedTask;
 }
